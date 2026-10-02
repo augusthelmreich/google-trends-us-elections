@@ -1,0 +1,16 @@
+# secrets
+.env
+
+# raw Google Trends Research API responses: non-transferable under Google's terms
+data/private/
+
+# derived search features / predictions: kept out until sharing terms are confirmed
+data/processed/*.csv
+data/processed/*.json
+
+# python / editors / macOS
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.venv/
+.DS_Store
