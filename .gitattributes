@@ -1,0 +1,2 @@
+# CSV data: never convert line endings (one source row contains a line break inside a quoted field)
+*.csv -text
