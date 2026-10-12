@@ -1,0 +1,15 @@
+name,term,kind,party,year,entity_title,home_state,validated_by,note
+unemployment,/m/07s_c,issue,,,Unemployment,,geography 2020-08..09 (tracks unemployment rate),
+health insurance,/m/02gqxg,issue,,,Health insurance,,geography 2020-02 (ambiguous: politics vs insurance market),
+tax,/m/07g82,issue,,,Tax,,,filing/administrative searches may dominate
+immigration,/m/03wn_,issue,,,Immigration to the United States,,geography 2012-08..09,15 zero states in 2012 (small states)
+obama,/m/02mjmr,candidate,D,2008,Barack Obama,IL,home-state rank,
+mccain,/m/0bymv,candidate,R,2008,John McCain,AZ,home-state rank,
+obama,/m/02mjmr,candidate,D,2012,Barack Obama,IL,home-state rank,
+romney,/m/0271_s,candidate,R,2012,Mitt Romney,MA,home-state rank,
+clinton,/m/0d06m5,candidate,D,2016,Hillary Clinton,NY,home-state rank,
+trump,/m/0cqt90,candidate,R,2016,Donald Trump,NY,home-state rank,
+biden,/m/012gx2,candidate,D,2020,Joe Biden,DE,home-state rank,
+trump,/m/0cqt90,candidate,R,2020,Donald Trump,FL,home-state rank,residence moved to FL in 2019
+harris,/m/08sry2,candidate,D,2024,Kamala Harris,CA,home-state rank,nominee only from Aug 2024
+trump,/m/0cqt90,candidate,R,2024,Donald Trump,FL,home-state rank,
