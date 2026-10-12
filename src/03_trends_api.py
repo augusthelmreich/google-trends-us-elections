@@ -1,5 +1,5 @@
 """
-Google Trends as an instrument
+Google Trends as an instrument: one request, cached, understood.
 
 Reusable part:
   fetch_regions(term, start, end)  -> DataFrame[state, value] for one term and one
@@ -125,7 +125,7 @@ if __name__ == "__main__":
     e = pull(TOPICS["unemployment"], "2020-08", "2020-09", "E_unemp_2020-08..09")
     describe(e, "   ")
 
-    out = ROOT / "data/processed/trends_station4.csv"
+    out = ROOT / "data/processed/trends_instrument_checks.csv"
     pd.concat(maps).to_csv(out, index=False)
     print(f"\nwrote {out.relative_to(ROOT)}  ({sum(len(m) for m in maps)} rows, 5 maps)")
     print(f"raw responses cached in {CACHE.relative_to(ROOT)}/ (git-ignored)")

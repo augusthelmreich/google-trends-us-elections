@@ -7,7 +7,7 @@ Inputs : data/raw/topics.csv            the issue dictionary and candidate IDs (
 Outputs: data/processed/coverage_audit.csv   one row per (topic, year): zeros, min, max, mean
          data/processed/features.csv         one row per (year, state): issue features + candidate contrast
 
-Window: August-September of each election year (same as the report): a common
+Window: August-September of each election year: a common
 pre-election window with an information cutoff before October.
 
 Feature definitions (fixed before any model is fitted):
@@ -19,7 +19,7 @@ Feature definitions (fixed before any model is fitted):
              the Democratic nominee's relative attention minus the Republican's, each
              normalised against its own map (the two maps are NOT on a common scale).
 
-Coverage rule (from the report, applied here per year for the audit; the evaluation
+Coverage rule (applied here per year for the audit; the evaluation
 script applies it per training fold): a topic is eligible only if every state has a
 strictly positive value. A zero is "below Google's threshold", not "no interest".
 """

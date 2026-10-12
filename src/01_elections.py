@@ -1,5 +1,5 @@
 """
-Station 2 -- Build the outcome table from the MIT election file.
+Build the outcome table from the MIT election file.
 
 Input : data/raw/1976-2024-president.csv   (MIT Election Lab, public)
 Output: data/processed/elections.csv       one row per state x election, 2008-2024
@@ -84,7 +84,7 @@ e.to_csv(OUT, index=False)
 
 # ---- 5. what was built
 print(f"\nwrote {OUT.relative_to(ROOT)}  ({len(e)} rows)")
-print("\nswing (pp) by election -- compare with the report:")
+print("\nswing (pp) by election:")
 print(e.groupby("year").swing.agg(["mean", "median", "min", "max"]).round(3).to_string())
 print("\nlargest |swing| rows (sanity check -- Utah 2016 is the two-party artefact):")
 print(e.reindex(e.swing.abs().sort_values(ascending=False).index)
