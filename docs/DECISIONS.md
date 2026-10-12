@@ -12,3 +12,4 @@ One line per decision: what was chosen, and why. Newest at the bottom.
 | 2026-10-12 | Search window is Aug–Sep of each election year | Latest whole-month window that ends before early voting; identical across years; two months limits zeros |
 | 2026-10-12 | Topic eligible only if no state is zero in any training year | A zero is below-threshold, not zero interest; immigration excluded (24→6 zeros, 2008–2024) |
 | 2026-10-12 | Candidate maps validated by home-state rank AND top-3 states | For general-election nominees top states are battlegrounds (DC, NH, VA, CO), i.e. campaign attention, which the D−R contrast largely cancels |
+| 2026-10-12 | Primary metric is MAE on raw swing; geo_mae (MAE after removing the year's mean error) is reported alongside | Raw MAE is dominated by the national swing, which centred state features cannot affect; geo_mae isolates what they can |
