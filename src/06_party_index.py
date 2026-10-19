@@ -19,7 +19,13 @@ import numpy as np
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
-f = pd.read_csv(ROOT / "data/processed/features.csv")
+import os
+
+# FEATURE_SET selects the feature table: "" (default) = main path from the globaltrends package,
+# "api" = direct-API path from robustness/features_api.py. Outputs carry the same suffix.
+SET = os.environ.get("FEATURE_SET", "")
+SFX = f"_{SET}" if SET else ""
+f = pd.read_csv(ROOT / f"data/processed/features{SFX}.csv")
 e = pd.read_csv(ROOT / "data/processed/elections.csv")[["year", "state_po", "total_votes"]]
 topics = pd.read_csv(ROOT / "data/raw/topics.csv")
 
@@ -120,6 +126,6 @@ if polls.exists():
 else:
     print("   survey-weighted index: skipped (no data/raw/ownership_polls.csv)")
 
-f[["year", "state_po", "swing", "d", "A", "A_raw"]].to_csv(ROOT / "data/processed/party_index.csv", index=False)
-pd.DataFrame(rows).to_csv(ROOT / "data/processed/party_index_result.csv", index=False)
-print("\nwrote data/processed/party_index.csv and party_index_result.csv")
+f[["year", "state_po", "swing", "d", "A", "A_raw"]].to_csv(ROOT / f"data/processed/party_index{SFX}.csv", index=False)
+pd.DataFrame(rows).to_csv(ROOT / f"data/processed/party_index_result{SFX}.csv", index=False)
+print(f"\nwrote data/processed/party_index{SFX}.csv and party_index_result{SFX}.csv")

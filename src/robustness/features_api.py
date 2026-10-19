@@ -1,11 +1,16 @@
 """
-From state maps to features.
+From state maps to features: the direct-API path (secondary).
+
+The main feature table is built by src/03_features.py from the supervisors'
+globaltrends package; this script builds the same table from one-term-per-request
+regions.list maps, as a comparison and robustness path. Run the analysis scripts on it
+with FEATURE_SET=api (e.g. FEATURE_SET=api python3 src/04_evaluate.py).
 
 Inputs : data/raw/topics.csv            the issue dictionary and candidate IDs (hand-made)
          data/processed/elections.csv   from 01_elections.py
-         Google Trends Research API     via fetch_regions() from 03_trends_api.py (cached)
-Outputs: data/processed/coverage_audit.csv   one row per (topic, year): zeros, min, max, mean
-         data/processed/features.csv         one row per (year, state): issue features + candidate contrast
+         Google Trends Research API     via fetch_regions() from robustness/trends_api.py (cached)
+Outputs: data/processed/coverage_audit_api.csv  one row per (topic, year): zeros, min, max, mean
+         data/processed/features_api.csv        one row per (year, state): issue features + candidate contrast
 
 Window: August-September of each election year: a common
 pre-election window with an information cutoff before October.
@@ -29,10 +34,10 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 
-# 03_trends_api.py starts with a digit, so it cannot be imported by name; load it by path.
-_spec = importlib.util.spec_from_file_location("trends_api", ROOT / "src/03_trends_api.py")
+# load the collector by path so this script runs from any working directory
+_spec = importlib.util.spec_from_file_location("trends_api", ROOT / "src/robustness/trends_api.py")
 trends_api = importlib.util.module_from_spec(_spec)
 _spec.loader.exec_module(trends_api)
 fetch_regions = trends_api.fetch_regions
@@ -61,7 +66,7 @@ audit = (maps.groupby(["kind", "name", "party", "year"], dropna=False)["value"]
              .agg(zeros=lambda v: int((v == 0).sum()), min="min", max="max", mean="mean")
              .reset_index())
 audit["eligible"] = audit.zeros == 0
-audit.to_csv(ROOT / "data/processed/coverage_audit.csv", index=False)
+audit.to_csv(ROOT / "data/processed/coverage_audit_api.csv", index=False)
 
 print("\nCOVERAGE AUDIT  (zeros = states below Google's threshold)")
 issues = audit[audit.kind == "issue"].pivot(index="name", columns="year", values="zeros")
@@ -96,8 +101,8 @@ features = (elections[["year", "state_po", "dem_share_2p_prev", "swing"]]
             .merge(cand, on=["year", "state"], how="left")
             .drop(columns="state"))
 assert len(features) == 255 and features.isna().sum().sum() == 0, features.isna().sum()
-features.to_csv(ROOT / "data/processed/features.csv", index=False)
+features.to_csv(ROOT / "data/processed/features_api.csv", index=False)
 
-print(f"\nwrote data/processed/features.csv  ({len(features)} rows)")
+print(f"\nwrote data/processed/features_api.csv  ({len(features)} rows)")
 print(features.drop(columns=["state_po"]).groupby("year").std().round(3).to_string())
 print("\n(std of each feature by year: how much geographic variation there is to work with)")

@@ -1,7 +1,7 @@
 """
 Permutation test: do the search features behave differently from random features?
 
-Question. 05_evaluate.py found that every search-feature model increases geo_mae
+Question. 04_evaluate.py found that every search-feature model increases geo_mae
 (the error on the geographic part of the swing) in every test year. Adding ANY
 regressor that carries no information also tends to increase out-of-sample error,
 because the model fits noise in training. So the question is not "is the gain
@@ -26,8 +26,14 @@ import numpy as np
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
-f = pd.read_csv(ROOT / "data/processed/features.csv")
-audit = pd.read_csv(ROOT / "data/processed/coverage_audit.csv")
+import os
+
+# FEATURE_SET selects the feature table: "" (default) = main path from the globaltrends package,
+# "api" = direct-API path from robustness/features_api.py. Outputs carry the same suffix.
+SET = os.environ.get("FEATURE_SET", "")
+SFX = f"_{SET}" if SET else ""
+f = pd.read_csv(ROOT / f"data/processed/features{SFX}.csv")
+audit = pd.read_csv(ROOT / f"data/processed/coverage_audit{SFX}.csv")
 
 TEST_YEARS = [2016, 2020, 2024]
 N_PERM = 1000
@@ -99,7 +105,7 @@ for m in ["issues", "candidates", "combined"]:
                      percentile=(dist < obs).mean() * 100, p_better_than_random=(dist >= obs).mean()))
 
 res = pd.DataFrame(rows)
-res.to_csv(ROOT / "data/processed/permutation.csv", index=False)
+res.to_csv(ROOT / f"data/processed/permutation{SFX}.csv", index=False)
 pd.set_option("display.width", 140)
 print(f"{N_PERM} permutations, seed {SEED}. Gain = geo_mae(historical) - geo_mae(model); positive = helped.\n")
 print(res.round(4).to_string(index=False))

@@ -1,7 +1,7 @@
 """
 Evaluation: do the search features reduce error beyond the baselines?
 
-Input : data/processed/features.csv        (from 04_features.py)
+Input : data/processed/features.csv        (from 03_features.py, or robustness/features_api.py with FEATURE_SET=api)
         data/processed/coverage_audit.csv  (per-fold eligibility of issue topics)
 Output: data/processed/results.csv         one row per (test year, model) with all metrics
         data/processed/coefficients.csv    fitted coefficients per fold and model
@@ -28,8 +28,14 @@ import numpy as np
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
-f = pd.read_csv(ROOT / "data/processed/features.csv")
-audit = pd.read_csv(ROOT / "data/processed/coverage_audit.csv")
+import os
+
+# FEATURE_SET selects the feature table: "" (default) = main path from the globaltrends package,
+# "api" = direct-API path from robustness/features_api.py. Outputs carry the same suffix.
+SET = os.environ.get("FEATURE_SET", "")
+SFX = f"_{SET}" if SET else ""
+f = pd.read_csv(ROOT / f"data/processed/features{SFX}.csv")
+audit = pd.read_csv(ROOT / f"data/processed/coverage_audit{SFX}.csv")
 
 TEST_YEARS = [2016, 2020, 2024]
 topics = pd.read_csv(ROOT / "data/raw/topics.csv")
@@ -79,8 +85,8 @@ for T in TEST_YEARS:
     print(f"{T}: trained on {[int(y) for y in sorted(train.year.unique())]}, eligible issues = {[ISSUE_NAME[c] for c in iss]}")
 
 res = pd.DataFrame(rows)
-res.to_csv(ROOT / "data/processed/results.csv", index=False)
-pd.DataFrame(coefs).to_csv(ROOT / "data/processed/coefficients.csv", index=False)
+res.to_csv(ROOT / f"data/processed/results{SFX}.csv", index=False)
+pd.DataFrame(coefs).to_csv(ROOT / f"data/processed/coefficients{SFX}.csv", index=False)
 
 pd.set_option("display.width", 140)
 order = ["no_swing", "historical", "issues", "candidates", "combined"]

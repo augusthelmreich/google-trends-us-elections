@@ -7,7 +7,7 @@ Reusable part:
                                       Raw JSON is cached in data/private/regions/ and
                                       never re-requested. Later scripts import this.
 
-Demonstration part (python3 src/03_trends_api.py): five maps that show
+Demonstration part (python3 src/robustness/trends_api.py): five maps that show
   A  what a map looks like, and the geographic sanity check
   B  the same topic in a different window -> values change, ratios roughly hold
   C  a zero-heavy topic (immigration, Aug-Sep 2012) -> why it was excluded
@@ -37,7 +37,7 @@ from pathlib import Path
 
 import pandas as pd
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 CACHE = ROOT / "data/private/regions"
 BASE = "https://www.googleapis.com/trends/v1beta/regions"
 

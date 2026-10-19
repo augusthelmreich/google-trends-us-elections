@@ -23,8 +23,14 @@ import numpy as np
 import pandas as pd
 
 ROOT = Path(__file__).resolve().parents[1]
-pi = pd.read_csv(ROOT / "data/processed/party_index.csv")
-f = pd.read_csv(ROOT / "data/processed/features.csv")
+import os
+
+# FEATURE_SET selects the feature table: "" (default) = main path from the globaltrends package,
+# "api" = direct-API path from robustness/features_api.py. Outputs carry the same suffix.
+SET = os.environ.get("FEATURE_SET", "")
+SFX = f"_{SET}" if SET else ""
+pi = pd.read_csv(ROOT / f"data/processed/party_index{SFX}.csv")
+f = pd.read_csv(ROOT / f"data/processed/features{SFX}.csv")
 df = pi.merge(f.drop(columns=["swing"]), on=["year", "state_po"])
 TOPICS = ["x_unemployment", "x_health_insurance", "x_climate_change", "x_tax", "x_crime"]
 
