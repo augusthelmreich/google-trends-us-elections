@@ -32,7 +32,9 @@ audit = pd.read_csv(ROOT / "data/processed/coverage_audit.csv")
 TEST_YEARS = [2016, 2020, 2024]
 N_PERM = 1000
 SEED = 20261012
-ISSUES = [c for c in f.columns if c.startswith("x_")]
+topics = pd.read_csv(ROOT / "data/raw/topics.csv")
+CORE = set("x_" + n.replace(" ", "_") for n in topics[(topics.kind == "issue") & (topics.set == "core")]["name"])
+ISSUES = [c for c in f.columns if c in CORE]
 ISSUE_NAME = {c: c[2:].replace("_", " ") for c in ISSUES}
 
 
