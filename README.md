@@ -1,54 +1,67 @@
 # Google Trends and US presidential elections
 
-Does state-level Google search attention add information to forecasts of US presidential vote swing? Across the five elections from 2008 to 2024, it does not.
+Does state-level Google search attention add information to forecasts of US presidential vote swing? Across the five elections from 2008 to 2024, the search features tested here did not improve state-level forecasts in any way a forecaster would notice. One narrower effect appears: on the normalisation used by the `globaltrends` package, attention to three issues gives a small, consistent improvement in the geographic component of the error that does not show up in the overall error and does not appear when the same maps are normalised the way Google does. A theory-driven test of issue ownership is not supported on either version of the data.
 
 ## Result
 
-Search attention to issues (unemployment, health insurance, tax) and to the two nominees, measured as Google Trends state maps for August–September of each election year, was added to a regression that already knows each state's previous result. Three chronological tests (train before 2016, 2020, 2024; test on that year) give near-ties with the baseline on mean absolute error. Most of that error, however, is the national swing, which a state-level feature cannot address. On the part it can address, the deviation of each state from the national swing, every search feature increased the error in every test year:
+Search attention to issues (unemployment, health insurance, tax) and to the two nominees, measured for each state over August–September of the election year, was added to a regression that already knows each state's previous result. Three chronological tests (train before 2016, 2020, 2024; test on that year) give near-ties with the baseline on mean absolute error (2016: 4.29 vs 4.29 pp; 2020: 1.69 vs 1.64; 2024: 2.83 vs 2.83). Most of that error is the year's mean state-level swing, which a state-level feature cannot address. The part it can address is each state's deviation from that mean; the table reports the change in MAE on that part, a diagnostic that isolates what a state feature could contribute, on both data paths:
 
-| Change in geographic MAE vs. baseline (pp; negative = worse) | Issues | Candidates | Combined |
+| Change in geographic MAE vs. baseline (pp; positive = better) | Issues | Candidates | Combined |
 |---|---|---|---|
-| 2016 | −0.012 | −0.502 | −0.422 |
-| 2020 | −0.034 | −0.050 | −0.074 |
-| 2024 | −0.117 | −0.012 | −0.087 |
+| 2016, package scores | +0.021 | −0.709 | −0.674 |
+| 2020, package scores | +0.047 | −0.026 | +0.037 |
+| 2024, package scores | +0.047 | −0.006 | +0.053 |
+| 2016, direct API maps | −0.012 | −0.502 | −0.422 |
+| 2020, direct API maps | −0.034 | −0.050 | −0.074 |
+| 2024, direct API maps | −0.117 | −0.012 | −0.087 |
 
-A permutation test (features shuffled across states within each year, 1,000 draws) shows the issue features are indistinguishable from random columns (pooled percentile 41). The candidate contrast is worse than every random draw: the relation between relative candidate attention and swing reverses between elections, so learning it from past elections misleads.
+A shuffle benchmark (features permuted across states within each year, 1,000 draws) puts the package-path issue gain above 99.8% of random columns pooled over the three years (per year: 82%, 97%, 99%); on the API path the same features sit at the 41st percentile, indistinguishable from noise. The gains are 1–5% of the geographic error, and the regression reaches them with health insurance negative and tax positive, the reverse of the signs issue-ownership theory assigns, so whatever it is picking up, it is not the mechanism the project set out to test. The candidate contrast is worse than every random draw on both paths: the relation between relative candidate attention and swing reverses between elections, so learning it from past elections misleads.
 
-**Issue ownership, tested directly.** A second test weights five issues by the party that owns them in the political-science literature (health insurance, unemployment and climate change Democratic; tax and crime Republican; signs from Egan 2013 and Fagan 2019) and asks whether states whose attention leans toward Democratic-owned issues swing relatively more Democratic. Across the five elections the mean correlation with the deviation from national swing is −0.16 (permutation p = 0.995): the relation runs opposite to the prediction in four of five elections and survives every pre-specified robustness check. The plan, test and result are in `docs/PREREG_party_index.md`. Leave-one-out shows the negative relation is carried mainly by unemployment attention, whose state map tracks the unemployment rate rather than political interest.
+**Issue ownership, tested directly.** A second test weights five issues by the party that owns them in the political-science literature (health insurance, unemployment and climate change Democratic; tax and crime Republican; one coding, with signs from Egan 2013 and Fagan 2019) and asks whether states whose attention leans toward Democratic-owned issues swing relatively more Democratic. Across the five elections the mean correlation with the deviation from mean swing is −0.16 on both data paths (permutation p ≈ 0.99): the relation runs opposite to the prediction in four of five elections and survives every pre-specified robustness check. The documented analysis plan, test and result are in `docs/PREREG_party_index.md`. Leave-one-out shows the negative relation is carried mainly by unemployment attention, whose state map tracks the unemployment rate rather than political interest.
 
-**What the instrument measures.** Three findings about the data itself. The 2020 unemployment map tracks the unemployment rate (Nevada, Kentucky, New Jersey, Michigan on top). Nominee maps peak in battleground states rather than home states, so candidate search measures where the campaign is being fought. And issue search geography has become partisan geography: every issue topic except crime correlates increasingly with a state's prior Democratic share (climate change: −0.02 in 2008, +0.71 in 2020), so at state level "attention to an issue" and "how blue the state is" can no longer be separated. An exploratory check that controls for prior partisanship (`src/08_exploratory.py`) leaves the unemployment relation unchanged and turns climate change mildly positive in 2020 and 2024; that is one topic in two elections and is proposed as a hypothesis, not a result.
+**Two normalisations of the same data.** The package divides a state's topic searches by its searches for a fixed control basket (gmail, map, translate, wikipedia, youtube); the direct API maps are Google's own share-of-all-searches figures. After the same centring step, the two agree closely for unemployment (r = 0.90–0.95 across states in every year) and loosely for the topics with little geographic signal (crime 0.27–0.81, health insurance 0.42–0.78; mean over all topic-years 0.75). The package also keeps years on one scale, which the per-request maps cannot: its unemployment score in August–September 2020 is six to ten times its level in any other election year. The cost is coverage: scaled jointly with a control term, immigration rounds to zero in all 51 states in every year, whereas the direct maps have 6–24 zero states. Immigration is excluded on both paths.
+
+**What the instrument measures.** The unemployment map tracks the unemployment rate (2020, direct map: Nevada, Kentucky, New Jersey, Michigan on top). Nominee maps peak in battleground states rather than home states, so candidate search measures where the campaign is being fought. And issue search geography has become partisan geography: climate change attention correlates with a state's prior Democratic share at +0.03 in 2008 and +0.63 in 2020 (package scores; +0.71 on the direct maps), so at state level "attention to an issue" and "how blue the state is" are hard to separate. An exploratory check that controls for prior partisanship (`src/07_exploratory.py`) leaves the unemployment relation unchanged and turns climate change mildly positive in 2020 and 2024; that is one topic in two elections and is proposed as a hypothesis, not a result.
 
 ## Design
 
 - **Outcome.** Democratic share of the two-party vote in each of the 50 states and DC, and its change since the previous election (the swing). Source: MIT Election Data and Science Lab, *U.S. President 1976–2024*.
-- **Features.** Google Trends Research API, `regions.list`: one state map per topic and election, August–September. Each map is divided by its own mean and centred, so features compare states within an election and are unaffected by Google's per-request rescaling. A topic is used only if no state is below Google's reporting threshold in any training year. Topic IDs, ownership signs and their sources are in `data/raw/topics.csv`; every ID was validated by the geography of its map before use.
-- **Models.** Ordinary least squares on previous share, with and without the search features. Nothing more complex: with five elections, the national component is learned from two to four data points.
-- **Evaluation.** Chronological folds only. MAE and RMSE, plus the split of each error into a national part (mean error) and a geographic part (spread across states), and the MAE on the geographic part alone.
+- **Search data.** Collected and scored with the `globaltrends` R package (Puhr & Müllner 2021; GitHub version 0.2.1), which queries the Google Trends Research API and normalises each topic by a control basket per state and month. Monthly scores for August and September of each election year are averaged, then each map is divided by its mean across states and centred, so features compare states within an election. A topic is used only if no state is below Google's reporting threshold in any training year. Topic IDs, ownership signs and their sources are in `data/raw/topics.csv`; every ID was checked by the geography of its map before use. The same features built from one-term-per-request API maps are kept as a robustness path (`src/robustness/`).
+- **Models.** Ordinary least squares on previous share, with and without the search features. Nothing more complex: with five elections, the year-level component is learned from two to four data points.
+- **Evaluation.** Chronological folds only. MAE and RMSE, plus the split of each error into a mean part (the year's mean state-level miss) and a geographic part (spread across states), and the MAE on the geographic part alone as a diagnostic.
 
 ## Running it
 
+Python 3.10+ with `pip install -r requirements.txt`; R 4.x with `globaltrends` from GitHub (`remotes::install_github("ha-pu/globaltrends")`) and a conda environment holding `google-api-python-client` for its API backend; a Google Trends Research API key, entered when the R scripts ask for it (never stored in the repo).
+
 ```
-pip install -r requirements.txt
-cp .env.example .env          # add your Google Trends Research API key
-python src/01_elections.py    # outcome table from the MIT file
-python src/02_baselines.py    # no-swing, historical OLS, oracle tide
-python src/03_trends_api.py   # API collector + instrument checks (needs the key)
-python src/04_features.py     # topic audit and feature construction (needs the key)
-python src/05_evaluate.py     # models, metrics, decomposition
-python src/06_permutation.py  # permutation test
-python src/07_party_index.py  # party-weighted issue index (pre-specified test)
-python src/08_exploratory.py  # exploratory partial correlations
+python src/01_elections.py              # outcome table from the MIT file
+python src/02_baselines.py              # no-swing, historical OLS, oracle tide
+# in an R session started at the repo root (the scripts prompt for the conda path and the key):
+#   source("src/globaltrends_stage1.R")   # setup check: one topic, five states
+#   source("src/globaltrends_stage2.R")   # collection: 13 topics x 51 states, 2008-2024
+python src/03_features.py               # package scores -> features, coverage audit, comparison with the API maps
+python src/04_evaluate.py               # models, metrics, decomposition
+python src/05_permutation.py            # shuffle benchmark
+python src/06_party_index.py            # party-weighted issue index (pre-specified test)
+python src/07_exploratory.py            # exploratory partial correlations
 ```
 
-API responses are cached under `data/private/` after the first run; scripts 05 to 08 run offline.
+Scripts 04–07 accept `FEATURE_SET=api` to run on the direct-API features; see `src/robustness/README.md`. The package database and the API cache live under `data/private/` and are not committed; everything from `03_features.py` on runs offline once they exist.
 
 ## Data
 
-See `data/README.md`. The election results are public and included. Raw Google Trends API responses are not committed, as Google's terms for the Research API describe them as non-transferable; the collector caches them locally and the derived tables can be regenerated with a key.
+See `data/README.md`. The election results are public and included. Raw Google Trends data are not committed, as Google's terms for the Research API describe them as non-transferable; the derived tables can be regenerated with a key.
 
 ## Decisions
 
 Every methodological choice and its reason is logged in `docs/DECISIONS.md`.
+
+## Citation
+
+Search data were collected and scored with the `globaltrends` package. Please cite:
+
+Puhr, H., & Müllner, J. (2021). *Let me Google that for you: Capturing globalization using Google Trends.* SSRN Working Paper 3969013. https://doi.org/10.2139/ssrn.3969013
 
 ## Context
 

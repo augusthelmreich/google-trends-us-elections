@@ -94,7 +94,7 @@ Spearman correlations; and r̄ for the unstandardised index.
 ## 8. What has and has not been seen
 
 - The regression coefficients for health insurance, tax and unemployment in
-  `05_evaluate.py` were observed before this plan was written (tax positive in every
+  `04_evaluate.py` (then numbered 05) were observed before this plan was written (tax positive in every
   fold, health insurance positive, unemployment changing sign). The signs in §3 come from
   the cited literature and in the case of tax contradict the observed coefficient. They
   were not chosen to fit the data.
@@ -117,15 +117,23 @@ any effect.
 1. The result is reported whatever it is.
 2. No topic, sign, transformation or test is changed after the result is seen without
    being recorded below as a deviation.
-3. The script `src/07_party_index.py` implements exactly §4–§7 and nothing else.
+3. The script `src/06_party_index.py` (numbered 07 when this plan was written) implements exactly §4–§7 and nothing else.
 
 ---
 
 ## Deviations from plan
 
-None. The script was run once after this plan was written; one indexing bug in the
+The script was run once after this plan was written; one indexing bug in the
 robustness block (row labels vs. positions after filtering) was fixed and the script rerun,
 with no change to the confirmatory numbers.
+
+**2026-10-19, data source.** After the result below was obtained, the project's search data
+were re-collected with the `globaltrends` package (control-basket normalisation) and that
+version became the main feature table; the direct-API features this plan was written for
+are kept as `features_api.csv`. The index, target, test and robustness checks were not
+changed. Rerun on the package features the confirmatory result is the same: mean r = −0.155,
+permutation p = 0.993, not supported (API features: −0.159, p = 0.995). Robustness checks
+range from −0.08 (leave out unemployment) to −0.19 (leave out climate change).
 
 ## Result (2026-10-12)
 
@@ -150,11 +158,11 @@ survey-weighted version was not run (no poll file).
 
 Interpretation, stated as hypothesis and not tested here: the negative relation is carried
 mainly by the unemployment topic, whose state map tracks the unemployment rate rather
-than political attention (see `03_trends_api.py`). States with relatively more
+than political attention (see `src/robustness/trends_api.py`). States with relatively more
 unemployment searching before the election moved relatively toward the Republican
 candidate in these cycles regardless of which party held the presidency. That is a
 retrospective-economic pattern, not an issue-ownership one, and it would need to be tested
 against the unemployment rate itself.
 
 Any follow-up analysis (for example controlling for prior partisanship) is exploratory
-and lives in a separate script, not in `07_party_index.py`.
+and lives in a separate script, not in `06_party_index.py`.
