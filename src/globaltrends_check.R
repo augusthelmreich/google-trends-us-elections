@@ -1,5 +1,5 @@
 # ---------------------------------------------------------------------------
-# globaltrends, stage 1: set up the Research API backend and run ONE small test.
+# globaltrends, setup check: set up the Research API backend and run ONE small test.
 #
 # Purpose: collect the same topics through the supervisor's package (Puhr & Müllner
 # 2021, globaltrends) so its control-basket search scores can be compared with the
@@ -11,7 +11,7 @@
 # and have your API key ready; the script asks for it without echo.
 #
 # Run in R / RStudio with the repo folder as working directory:
-#   source("src/globaltrends_stage1.R")
+#   source("src/globaltrends_check.R")
 # ---------------------------------------------------------------------------
 
 need <- c("RSQLite", "zoo", "reticulate", "dplyr", "remotes")
@@ -66,4 +66,4 @@ cat("\ndate range:", as.character(min(out$date)), "to", as.character(max(out$dat
 cat("columns:", paste(names(out), collapse = ", "), "\n")
 
 disconnect_db()
-cat("\nStage 1 done. Paste this whole output to Claude.\n")
+cat("\nSetup check done. If the table above has 660 rows, run src/globaltrends_collect.R next.\n")

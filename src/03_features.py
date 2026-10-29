@@ -2,7 +2,7 @@
 Features from the globaltrends package (main path), and a comparison with the
 direct-API path from src/robustness/features_api.py.
 
-Package scores come from src/globaltrends_stage2.R (data/processed/globaltrends_scores.csv).
+Package scores come from src/globaltrends_collect.R (data/processed/globaltrends_scores.csv).
 
 Both paths rest on the same API. They differ in the denominator:
   API map    : Google rescales a state's topic share of ALL searches to 0..100 per request
@@ -38,7 +38,7 @@ if len(bad):
     print(bad.groupby(["keyword", "year"]).size().to_string())
 
 # ---- 2. label the keywords with the topic names used in features.csv -------------------
-issues = topics[(topics.kind == "issue") & topics.set.isin(["core", "extended"])][["name", "term"]]
+issues = topics[(topics.kind == "issue") & (topics.set == "included")][["name", "term"]]
 cands = topics[topics.kind == "candidate"][["name", "term", "party", "year"]].astype({"year": int})
 
 gi = gt.merge(issues, left_on="keyword", right_on="term").assign(kind="issue", party=None)

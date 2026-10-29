@@ -1,5 +1,5 @@
 # ---------------------------------------------------------------------------
-# globaltrends, stage 2: full collection through the supervisor's package.
+# globaltrends, collection: all topics through the supervisors' package.
 #
 # All 51 jurisdictions, window 2008-01..2024-12 (monthly), control basket = the
 # package default (gmail, map, translate, wikipedia, youtube), objects = the
@@ -10,8 +10,8 @@
 #   September search scores of that election year -- the package's control-basket
 #   equivalent of the project's Aug-Sep state maps.
 #
-# Needs: the conda env from stage 1 and the API key. Run from the repo root:
-#   source("src/globaltrends_stage2.R")
+# Needs: the conda env from globaltrends_check.R and the API key. Run from the repo root:
+#   source("src/globaltrends_collect.R")
 # Takes roughly 30-60 minutes (about 700 requests, paced by the package).
 # Safe to rerun: downloads already in the database are skipped by the package.
 # ---------------------------------------------------------------------------
@@ -23,12 +23,12 @@ CONDA_ENV <- readline("Path of the conda env: ")
 api_key   <- if (requireNamespace("getPass", quietly = TRUE)) getPass::getPass("API key: ") else readline("API key: ")
 
 topics <- read.csv(file.path(REPO, "data/raw/topics.csv"), stringsAsFactors = FALSE)
-issue_ids <- unique(topics$term[topics$kind == "issue" & topics$set %in% c("core", "extended") & topics$term != ""])
+issue_ids <- unique(topics$term[topics$kind == "issue" & topics$set == "included" & topics$term != ""])
 cand_ids  <- unique(topics$term[topics$kind == "candidate"])
 objects   <- c(issue_ids, cand_ids)
 cat("objects to collect:", length(objects), "\n"); print(objects)
 
-# --- database (same folder as stage 1); stay here until the end ---------------------
+# --- database (same folder as the check script); stay here until the end ---------------------
 db_dir <- file.path(REPO, "data/private/globaltrends_v2")
 dir.create(db_dir, showWarnings = FALSE, recursive = TRUE)
 setwd(db_dir)
@@ -76,4 +76,4 @@ print(sc %>% count(keyword, year) %>% tidyr::pivot_wider(names_from = year, valu
 
 disconnect_db()
 setwd(REPO)
-cat("\nStage 2 done. Next: python3 src/03_features.py\n")
+cat("\nCollection done. Next: python3 src/03_features.py\n")

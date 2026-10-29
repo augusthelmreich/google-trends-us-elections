@@ -6,7 +6,7 @@ Implements §4-§7 of the plan and nothing else.
   index   A(s,t) = sum_i own_i * x(s,i,t) / sd_t(x(.,i,t))        (§4; secondary: unstandardised)
   target  d(s,t) = swing(s,t) - mean_s swing(.,t)                 (§5)
   test    r_t = corr(A, d) within each election; statistic r_bar = mean of the five r_t;
-          one-sided permutation p (A shuffled across states within year, 10,000 draws)  (§6)
+          one-sided permutation p (A shuffled across states within year, N_PERM draws)  (§6)
   robustness: drop Utah 2016; vote-weighted correlation; leave-one-topic-out;
           survey-weighted index if data/raw/ownership_polls.csv exists               (§7)
 
@@ -32,8 +32,8 @@ topics = pd.read_csv(ROOT / "data/raw/topics.csv")
 N_PERM, SEED = 10000, 20261012
 YEARS = sorted(f.year.unique())
 
-# ---- §3 topics and signs: issue rows with a nonzero sign, core or extended, present in features
-own = (topics[(topics.kind == "issue") & topics.set.isin(["core", "extended"])]
+# ---- §3 topics and signs: included issue rows with a nonzero sign, present in features
+own = (topics[(topics.kind == "issue") & (topics.set == "included")]
        .assign(col=lambda d: "x_" + d["name"].str.replace(" ", "_"))
        .set_index("col")["own_sign"].astype(float))
 own = own[(own != 0) & own.index.isin(f.columns)]
@@ -94,7 +94,7 @@ p = perm_p(f, "A", rbar, rng)
 rows = [dict(test="confirmatory (standardised index)", r_bar=rbar, p_one_sided=p,
              n_years_positive=sum(v > 0 for v in r.values()), **{f"r_{y}": v for y, v in r.items()})]
 
-print("\nCONFIRMATORY TEST  r_t = corr(index, deviation from national swing)")
+print("\nCONFIRMATORY TEST  r_t = corr(index, deviation from the mean state-level swing)")
 for y, v in r.items():
     print(f"   {y}: r = {v:+.3f}")
 print(f"   mean r = {rbar:+.4f}   permutation p (one-sided, {N_PERM} draws) = {p:.4f}")
@@ -103,11 +103,11 @@ print("   success criterion: mean r > 0 and p < 0.05  ->", "SUPPORTED" if (rbar 
 # ---- secondary and §7 robustness ------------------------------------------------------------
 def add(name, df, a_col, weighted=False):
     rr = r_by_year(df, a_col, weighted); rb = np.mean(list(rr.values()))
-    rows.append(dict(test=name, r_bar=rb, p_one_sided=perm_p(df, a_col, rb, rng, n=2000) if not weighted else np.nan,
+    rows.append(dict(test=name, r_bar=rb, p_one_sided=perm_p(df, a_col, rb, rng) if not weighted else np.nan,
                      n_years_positive=sum(v > 0 for v in rr.values()), **{f"r_{y}": v for y, v in rr.items()}))
     print(f"   {name:<40} mean r = {rb:+.4f}   years>0: {sum(v > 0 for v in rr.values())}/5")
 
-print("\nSECONDARY / ROBUSTNESS (p from 2000 draws where computed)")
+print(f"\nSECONDARY / ROBUSTNESS (p from {N_PERM} draws where computed)")
 add("unstandardised index", f, "A_raw")
 sp = f.groupby("year")[["A", "d"]].corr(method="spearman").xs("A", level=1)["d"]
 rows.append(dict(test="spearman (standardised)", r_bar=sp.mean(), p_one_sided=np.nan,

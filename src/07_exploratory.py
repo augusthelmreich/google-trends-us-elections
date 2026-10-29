@@ -2,7 +2,7 @@
 EXPLORATORY follow-up to the party-index test. Not pre-specified; nothing here changes
 the confirmatory verdict in docs/PREREG_party_index.md.
 
-Question. The index correlated NEGATIVELY with the deviation from national swing
+Question. The index correlated NEGATIVELY with the deviation from the mean state-level swing
 (mean r = -0.16). Two candidate explanations:
   (a) partisanship: the index tracks how Democratic a state already is, and in 2020/2024
       the bluest states moved most toward the Republican candidate relative to others;

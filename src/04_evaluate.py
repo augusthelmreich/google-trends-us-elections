@@ -39,8 +39,9 @@ audit = pd.read_csv(ROOT / f"data/processed/coverage_audit{SFX}.csv")
 
 TEST_YEARS = [2016, 2020, 2024]
 topics = pd.read_csv(ROOT / "data/raw/topics.csv")
-CORE = set("x_" + n.replace(" ", "_") for n in topics[(topics.kind == "issue") & (topics.set == "core")]["name"])
-ISSUES = [c for c in f.columns if c in CORE]
+# all included issue topics; the coverage rule decides per fold which are used
+ISSUE_SET = set("x_" + n.replace(" ", "_") for n in topics[(topics.kind == "issue") & (topics.set == "included")]["name"])
+ISSUES = [c for c in f.columns if c in ISSUE_SET]
 ISSUE_NAME = {c: c[2:].replace("_", " ") for c in ISSUES}          # x_health_insurance -> health insurance
 
 
@@ -94,7 +95,7 @@ tab = res.pivot(index="year", columns="model", values="mae")[order]
 print("\nMAE (pp)")
 print(tab.round(3).to_string())
 
-print("\nDECOMPOSITION: mean error (national miss) | geographic spread | geo_mae (error a state feature could reduce)")
+print("\nDECOMPOSITION: mean error (the year's mean state-level miss) | geographic spread | geo_mae (error a state feature could reduce)")
 for T in TEST_YEARS:
     r = res[res.year == T].set_index("model").loc[order]
     print(f"\n  {T}")

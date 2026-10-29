@@ -50,11 +50,11 @@ elections = pd.read_csv(ROOT / "data/processed/elections.csv")
 
 # ---- 1. pull every map (issues x years, and each nominee in their year) ----------------
 maps = []
-for _, t in topics[(topics.kind == "issue") & topics.set.isin(["core", "extended"])].iterrows():
+for _, t in topics[(topics.kind == "issue") & (topics.set == "included")].iterrows():
     for y in YEARS:
         m = fetch_regions(t.term, f"{y}-{WINDOW[0]}", f"{y}-{WINDOW[1]}")
         maps.append(m.assign(name=t["name"], kind="issue", party=None, year=y))
-for _, t in topics[(topics.kind == "candidate") & (topics.set == "core")].iterrows():
+for _, t in topics[(topics.kind == "candidate") & (topics.set == "included")].iterrows():
     y = int(t.year)
     m = fetch_regions(t.term, f"{y}-{WINDOW[0]}", f"{y}-{WINDOW[1]}")
     maps.append(m.assign(name=t["name"], kind="candidate", party=t.party, year=y))

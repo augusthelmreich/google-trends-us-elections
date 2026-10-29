@@ -1,7 +1,7 @@
 # Robustness path: direct API maps
 
 The main pipeline builds its features from the `globaltrends` package
-(`src/globaltrends_stage2.R` -> `src/03_features.py`). This folder holds the
+(`src/globaltrends_collect.R` -> `src/03_features.py`). This folder holds the
 other way of getting the same maps, used only to check that the results do not
 depend on the package's control-basket normalisation:
 

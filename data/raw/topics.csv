@@ -1,21 +1,21 @@
 name,term,kind,set,party,year,entity_title,home_state,validated_by,note,own_sign,own_source
-unemployment,/m/07s_c,issue,core,,,Unemployment,,geography 2020-08..09 (tracks unemployment rate),,1,Egan 2013 Table 3.2 via Noble 2025 suppl. C.2: jobs -> Democratic
-health insurance,/m/02gqxg,issue,core,,,Health insurance,,geography 2020-02 (ambiguous: politics vs insurance market),,1,"Fagan 2019 App. Table 2: health care, Egan long-run score -12 (Democratic)"
-tax,/m/07g82,issue,core,,,Tax,,,filing/administrative searches may dominate,-1,"Egan 2013 pp. 2, 10; Table 3.2 via Noble 2025 C.2: taxes -> Republican"
-immigration,/m/03wn_,issue,core,,,Immigration to the United States,,geography 2012-08..09,15 zero states in 2012 (small states),-1,"Fagan 2019 App. Table 2: immigration, Egan score +9 (Republican)"
-obama,/m/02mjmr,candidate,core,D,2008.0,Barack Obama,IL,home-state rank,,,
-mccain,/m/0bymv,candidate,core,R,2008.0,John McCain,AZ,home-state rank,,,
-obama,/m/02mjmr,candidate,core,D,2012.0,Barack Obama,IL,home-state rank,,,
-romney,/m/0271_s,candidate,core,R,2012.0,Mitt Romney,MA,home-state rank,,,
-clinton,/m/0d06m5,candidate,core,D,2016.0,Hillary Clinton,NY,home-state rank,,,
-trump,/m/0cqt90,candidate,core,R,2016.0,Donald Trump,NY,home-state rank,,,
-biden,/m/012gx2,candidate,core,D,2020.0,Joe Biden,DE,home-state rank,,,
-trump,/m/0cqt90,candidate,core,R,2020.0,Donald Trump,FL,home-state rank,residence moved to FL in 2019,,
-harris,/m/08sry2,candidate,core,D,2024.0,Kamala Harris,CA,home-state rank,nominee only from Aug 2024,,
-trump,/m/0cqt90,candidate,core,R,2024.0,Donald Trump,FL,home-state rank,,,
-climate change,/m/0d063v,issue,extended,,,Climate change,,"geography 2020-08..09 (DC, VT, HI, CA, OR top; OH, AL, MI, WV, MS bottom)",alternative /g/11bwddyybs has the same title; /m/ chosen as the long-standing entity,1,"Fagan 2019 App. Table 2: environment, Egan score -18 (Democratic)"
+unemployment,/m/07s_c,issue,included,,,Unemployment,,geography 2020-08..09 (tracks unemployment rate),,1,Egan 2013 Table 3.2 via Noble 2025 suppl. C.2: jobs -> Democratic
+health insurance,/m/02gqxg,issue,included,,,Health insurance,,geography 2020-02 (ambiguous: politics vs insurance market),,1,"Fagan 2019 App. Table 2: health care, Egan long-run score -12 (Democratic)"
+tax,/m/07g82,issue,included,,,Tax,,,filing/administrative searches may dominate,-1,"Egan 2013 pp. 2, 10; Table 3.2 via Noble 2025 C.2: taxes -> Republican"
+immigration,/m/03wn_,issue,included,,,Immigration to the United States,,geography 2012-08..09,15 zero states in 2012 (small states),-1,"Fagan 2019 App. Table 2: immigration, Egan score +9 (Republican)"
+obama,/m/02mjmr,candidate,included,D,2008.0,Barack Obama,IL,home-state rank,,,
+mccain,/m/0bymv,candidate,included,R,2008.0,John McCain,AZ,home-state rank,,,
+obama,/m/02mjmr,candidate,included,D,2012.0,Barack Obama,IL,home-state rank,,,
+romney,/m/0271_s,candidate,included,R,2012.0,Mitt Romney,MA,home-state rank,,,
+clinton,/m/0d06m5,candidate,included,D,2016.0,Hillary Clinton,NY,home-state rank,,,
+trump,/m/0cqt90,candidate,included,R,2016.0,Donald Trump,NY,home-state rank,,,
+biden,/m/012gx2,candidate,included,D,2020.0,Joe Biden,DE,home-state rank,,,
+trump,/m/0cqt90,candidate,included,R,2020.0,Donald Trump,FL,home-state rank,residence moved to FL in 2019,,
+harris,/m/08sry2,candidate,included,D,2024.0,Kamala Harris,CA,home-state rank,nominee only from Aug 2024,,
+trump,/m/0cqt90,candidate,included,R,2024.0,Donald Trump,FL,home-state rank,,,
+climate change,/m/0d063v,issue,included,,,Climate change,,"geography 2020-08..09 (DC, VT, HI, CA, OR top; OH, AL, MI, WV, MS bottom)",alternative /g/11bwddyybs has the same title; /m/ chosen as the long-standing entity,1,"Fagan 2019 App. Table 2: environment, Egan score -18 (Democratic)"
 education,,issue,excluded,,,,,geography 2020-08..09: no usable entity,"/g/121p6d90 (professional field) 43 zero states, mean 11; /m/04w82m (education policy) 18 zeros; /m/02dk5q (state school) mean 17, CT/MA outliers",1,"Fagan 2019 App. Table 2: education, Egan score -10 (Democratic)"
-crime,/m/01rbb,issue,extended,,,Crime,,"geography 2020-08..09 (DC, MN, WY, LA, GA top; no zeros)","generic topic, narrow range 57-100: little geographic spread",-1,"Fagan 2019 App. Table 2: law and crime, Egan score +7 (Republican)"
+crime,/m/01rbb,issue,included,,,Crime,,"geography 2020-08..09 (DC, MN, WY, LA, GA top; no zeros)","generic topic, narrow range 57-100: little geographic spread",-1,"Fagan 2019 App. Table 2: law and crime, Egan score +7 (Republican)"
 abortion,,issue,excluded,,,,,,not pulled,0,"Egan 2013 p. 7 / ch. 2: non-consensus issue, ownership framework does not apply"
 gun control,,issue,excluded,,,,,,not pulled,0,Egan 2013 p. 7 / ch. 2: non-consensus issue (guns)
 inflation,,issue,excluded,,,,,,not pulled,0,no pre-2022 ownership evidence located; Fagan folds into macroeconomics (Both)
