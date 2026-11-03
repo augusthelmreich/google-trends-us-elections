@@ -37,8 +37,13 @@ own = (topics[(topics.kind == "issue") & (topics.set == "included")]
        .assign(col=lambda d: "x_" + d["name"].str.replace(" ", "_"))
        .set_index("col")["own_sign"].astype(float))
 own = own[(own != 0) & own.index.isin(f.columns)]
-# immigration fails the coverage rule in every year (24 zero states in 2008): excluded per plan
-own = own.drop("x_immigration", errors="ignore")
+# coverage rule, as in the forecasting scripts: a topic with a zero state in any election is out
+audit = pd.read_csv(ROOT / f"data/processed/coverage_audit{SFX}.csv")
+zeros = audit[audit.kind == "issue"].groupby("name").zeros.sum()
+failing = ["x_" + n.replace(" ", "_") for n, z in zeros.items() if z > 0]
+if failing:
+    print("excluded by the coverage rule:", [c[2:] for c in failing if c in own.index])
+own = own.drop(failing, errors="ignore")
 TOPICS = list(own.index)
 print("topics and signs:", {c[2:]: int(s) for c, s in own.items()})
 
@@ -115,6 +120,11 @@ rows.append(dict(test="spearman (standardised)", r_bar=sp.mean(), p_one_sided=np
 print(f"   {'spearman':<40} mean r = {sp.mean():+.4f}   years>0: {int((sp > 0).sum())}/5")
 add("drop Utah 2016", f[~((f.year == 2016) & (f.state_po == "UT"))], "A")
 add("vote-weighted correlation", f, "A", weighted=True)
+# side-balanced: mean of the Democratic-owned topics minus mean of the Republican-owned ones,
+# so each side gets equal weight whatever the number of topics on it
+dem = [c for c in TOPICS if own[c] > 0]; rep = [c for c in TOPICS if own[c] < 0]
+f["A_bal"] = build_index(f, dem, {c: 1 / len(dem) for c in dem}, True) - build_index(f, rep, {c: 1 / len(rep) for c in rep}, True)
+add(f"side-balanced ({len(dem)} D vs {len(rep)} R, equal side weight)", f, "A_bal")
 for c in TOPICS:
     rest = [t for t in TOPICS if t != c]
     f[f"A_wo_{c}"] = build_index(f, rest, own, True)

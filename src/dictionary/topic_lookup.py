@@ -6,7 +6,7 @@ match is NOT automatically right: "health care" once resolved to a logistics com
 Read the titles, pick the entity that means the concept, then validate it by
 geography with fetch_regions() before it goes into data/raw/topics.csv.
 
-    python src/topic_lookup.py "climate change" "education" "crime"
+    python3 src/dictionary/topic_lookup.py "climate change" "education" "crime"
 """
 import json
 import sys

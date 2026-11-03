@@ -1,8 +1,8 @@
 """
 From state maps to features: the direct-API path (secondary).
 
-The main feature table is built by src/03_features.py from the supervisors'
-globaltrends package; this script builds the same table from one-term-per-request
+The main feature table is built by src/03_features.py from the globaltrends
+package (Puhr & Müllner 2021); this script builds the same table from one-term-per-request
 regions.list maps, as a comparison and robustness path. Run the analysis scripts on it
 with FEATURE_SET=api (e.g. FEATURE_SET=api python3 src/04_evaluate.py).
 

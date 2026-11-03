@@ -2,13 +2,13 @@
 EXPLORATORY follow-up to the party-index test. Not pre-specified; nothing here changes
 the confirmatory verdict in docs/PREREG_party_index.md.
 
-Question. The index correlated NEGATIVELY with the deviation from the mean state-level swing
-(mean r = -0.16). Two candidate explanations:
-  (a) partisanship: the index tracks how Democratic a state already is, and in 2020/2024
-      the bluest states moved most toward the Republican candidate relative to others;
-  (b) economics: the index is carried by unemployment attention, which tracks the local
-      unemployment rate, and worse local conditions went with relative movement away
-      from the Democratic candidate.
+Question. Whatever the index does, two things could be behind it:
+  (a) partisanship: issue topics may track how Democratic a state already is, and in
+      2020/2024 the bluest states moved most toward the Republican candidate relative
+      to others;
+  (b) economics: a topic such as unemployment tracks local economic conditions, which
+      move with the swing for reasons that have nothing to do with issue ownership.
+The script therefore looks at each topic separately as well as at the index.
 
 Checks.
   1. Partial correlation: residualise both the index and the target on previous two-party

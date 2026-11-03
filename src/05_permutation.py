@@ -1,12 +1,12 @@
 """
 Permutation test: do the search features behave differently from random features?
 
-Question. 04_evaluate.py found that every search-feature model increases geo_mae
-(the error on the geographic part of the swing) in every test year. Adding ANY
-regressor that carries no information also tends to increase out-of-sample error,
+Question. 04_evaluate.py reports the change in geo_mae (the error on the geographic
+part of the swing) when search features are added. Adding ANY regressor that carries
+no information also tends to change out-of-sample error, usually for the worse,
 because the model fits noise in training. So the question is not "is the gain
-negative" but "is the observed gain different from what uninformative features
-of the same shape would produce".
+positive or negative" but "is the observed gain different from what uninformative
+features of the same shape would produce".
 
 Method. Within every election year, shuffle each feature column across states
 (the feature keeps its distribution per year; its link to the state is destroyed).

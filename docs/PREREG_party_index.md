@@ -135,6 +135,17 @@ changed. Rerun on the package features the confirmatory result is the same: mean
 permutation p = 0.993, not supported (API features: −0.159, p = 0.995). Robustness checks
 range from −0.08 (leave out unemployment) to −0.19 (leave out climate change).
 
+**2026-11-02, dictionary.** After the results below, the topic dictionary was revised by a
+written validation rule applied to all candidates (see the decision log): the narrow
+immigration entity was replaced by the broad one, which passes coverage, and unemployment
+was removed from the index because the sources code *jobs* Democratic but *the economy*
+Republican, leaving its sign undetermined. The index, target, test and robustness checks are
+unchanged; a side-balanced variant was added. Second specification (health insurance,
+climate change Democratic; tax, crime, immigration Republican): mean r = −0.070 on package
+features (years +0.11, −0.21, −0.26, +0.15, −0.14; p = 0.86), −0.052 on API features
+(p = 0.79); side-balanced −0.08 on both; not supported. The first specification's negative
+mean was carried by unemployment, as its leave-one-out row had shown.
+
 ## Result (2026-10-12)
 
 **H1 not supported.** Topics in the index: unemployment (+1), health insurance (+1),

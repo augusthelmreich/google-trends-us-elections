@@ -10,7 +10,7 @@ Reusable part:
 Demonstration part (python3 src/robustness/trends_api.py): five maps that show
   A  what a map looks like, and the geographic sanity check
   B  the same topic in a different window -> values change, ratios roughly hold
-  C  a zero-heavy topic (immigration, Aug-Sep 2012) -> why it was excluded
+  C  a zero-heavy topic (the narrow immigration entity, Aug-Sep 2012) -> why entity size matters
   D  topic ID vs plain keyword for the same concept
   E  unemployment in Aug-Sep 2020 -> the COVID confound in plain sight
 

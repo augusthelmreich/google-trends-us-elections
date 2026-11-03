@@ -7,7 +7,7 @@ Output: data/processed/elections.csv       one row per state x election, 2008-20
 Columns written:
   year, state_po, dem_votes, rep_votes, total_votes,
   dem_share_all   = Dem votes / all votes           (for reference only)
-  dem_share_2p    = Dem votes / (Dem + Rep votes)   <- the share we model
+  dem_share_2p    = Dem votes / (Dem + Rep votes)   <- the modelled share
   dem_share_2p_prev, swing = dem_share_2p - dem_share_2p_prev   <- the target
 
 Three notes on the source file.:
